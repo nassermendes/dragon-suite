@@ -62,3 +62,9 @@ htmlcov/
 # Operating System
 .DS_Store
 Thumbs.db
+
+# Android
+android/.gradle/
+android/build/
+android/app/build/
+android/testlib/build/
