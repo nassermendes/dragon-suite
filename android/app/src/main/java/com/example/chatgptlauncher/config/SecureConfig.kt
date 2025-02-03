@@ -15,38 +15,45 @@ class SecureConfig(context: Context) {
         EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
     )
 
-    fun storeCredentials() {
-        with(securePrefs.edit()) {
-            // OpenAI
-            putString("OPENAI_API_KEY", "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")
+    // OpenAI
+    fun getOpenAIApiKey(): String = securePrefs.getString("OPENAI_API_KEY", "") ?: ""
+    fun setOpenAIApiKey(key: String) = securePrefs.edit().putString("OPENAI_API_KEY", key).apply()
 
-            // YouTube Personal
-            putString("YOUTUBE_PERSONAL_CLIENT_ID", "1086175330509-7a8otqh6boj4s0a84onnajk0f2pbon97.apps.googleusercontent.com")
-            putString("YOUTUBE_PERSONAL_CLIENT_SECRET", "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")
+    // YouTube Personal
+    fun getYouTubePersonalClientId(): String = securePrefs.getString("YOUTUBE_PERSONAL_CLIENT_ID", "") ?: ""
+    fun setYouTubePersonalClientId(id: String) = securePrefs.edit().putString("YOUTUBE_PERSONAL_CLIENT_ID", id).apply()
+    fun getYouTubePersonalClientSecret(): String = securePrefs.getString("YOUTUBE_PERSONAL_CLIENT_SECRET", "") ?: ""
+    fun setYouTubePersonalClientSecret(secret: String) = securePrefs.edit().putString("YOUTUBE_PERSONAL_CLIENT_SECRET", secret).apply()
 
-            // YouTube Charity (same as personal in this case)
-            putString("YOUTUBE_CHARITY_CLIENT_ID", "1086175330509-7a8otqh6boj4s0a84onnajk0f2pbon97.apps.googleusercontent.com")
-            putString("YOUTUBE_CHARITY_CLIENT_SECRET", "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")
+    // YouTube Charity
+    fun getYouTubeCharityClientId(): String = securePrefs.getString("YOUTUBE_CHARITY_CLIENT_ID", "") ?: ""
+    fun setYouTubeCharityClientId(id: String) = securePrefs.edit().putString("YOUTUBE_CHARITY_CLIENT_ID", id).apply()
+    fun getYouTubeCharityClientSecret(): String = securePrefs.getString("YOUTUBE_CHARITY_CLIENT_SECRET", "") ?: ""
+    fun setYouTubeCharityClientSecret(secret: String) = securePrefs.edit().putString("YOUTUBE_CHARITY_CLIENT_SECRET", secret).apply()
 
-            // Instagram Personal
-            putString("INSTAGRAM_PERSONAL_ACCESS_TOKEN", "IGAAXem4IwHs9BZAE1fVGgxSXF6ZA2gxdzZAUTEhOVm5idElveU15aXh3SnktbnlBVDNNWjdBSWVwY1VQSElSX3dDckE5WnYwNWdxZA0hiT2oyS3F1aU5VVFpyZAU5ySWdLUU1vYlBydnpTNDZAMeHR3bTNMQm1QeWFrQXhjRG9hZAXVfbwZDZD")
-            putString("INSTAGRAM_PERSONAL_USER_ID", "17841402078003768")
+    // Instagram Personal
+    fun getInstagramPersonalAccessToken(): String = securePrefs.getString("INSTAGRAM_PERSONAL_ACCESS_TOKEN", "") ?: ""
+    fun setInstagramPersonalAccessToken(token: String) = securePrefs.edit().putString("INSTAGRAM_PERSONAL_ACCESS_TOKEN", token).apply()
+    fun getInstagramPersonalUserId(): String = securePrefs.getString("INSTAGRAM_PERSONAL_USER_ID", "") ?: ""
+    fun setInstagramPersonalUserId(id: String) = securePrefs.edit().putString("INSTAGRAM_PERSONAL_USER_ID", id).apply()
 
-            // Instagram Charity
-            putString("INSTAGRAM_CHARITY_ACCESS_TOKEN", "IGAAXem4IwHs9BZAE84S1pOS0lFZA1lpN2tDenQzUkNMVUR0ZAExzaUEtQUFEVG4xNnctQjFPNmhRbXZASTEVrbVkzd25XemZAsaEhSQk14ZA0taMS1BYVozQjVMYXlYdmh0Mk91N1NKdHQ3QV95SFQ3WHdQcTRiUFJ2XzhhWkdqLThpOAZDZD")
-            putString("INSTAGRAM_CHARITY_USER_ID", "17841469750108240")
+    // Instagram Charity
+    fun getInstagramCharityAccessToken(): String = securePrefs.getString("INSTAGRAM_CHARITY_ACCESS_TOKEN", "") ?: ""
+    fun setInstagramCharityAccessToken(token: String) = securePrefs.edit().putString("INSTAGRAM_CHARITY_ACCESS_TOKEN", token).apply()
+    fun getInstagramCharityUserId(): String = securePrefs.getString("INSTAGRAM_CHARITY_USER_ID", "") ?: ""
+    fun setInstagramCharityUserId(id: String) = securePrefs.edit().putString("INSTAGRAM_CHARITY_USER_ID", id).apply()
 
-            // Instagram App
-            putString("INSTAGRAM_APP_ID", "1652134369042127")
-            putString("INSTAGRAM_APP_SECRET", "e4c9d3340826ed90f625b8d52c538f92")
+    // Instagram App
+    fun getInstagramAppId(): String = securePrefs.getString("INSTAGRAM_APP_ID", "") ?: ""
+    fun setInstagramAppId(id: String) = securePrefs.edit().putString("INSTAGRAM_APP_ID", id).apply()
+    fun getInstagramAppSecret(): String = securePrefs.getString("INSTAGRAM_APP_SECRET", "") ?: ""
+    fun setInstagramAppSecret(secret: String) = securePrefs.edit().putString("INSTAGRAM_APP_SECRET", secret).apply()
 
-            // TikTok App
-            putString("TIKTOK_APP_KEY", "awdmgl4x0u4626up")
-            putString("TIKTOK_APP_SECRET", "hUtphXRT4J1X8I4ro09THiHvUHoFCLp0")
-
-            apply()
-        }
-    }
-
-    fun getCredential(key: String): String? = securePrefs.getString(key, null)
+    // TikTok
+    fun getTikTokAppKey(): String = securePrefs.getString("TIKTOK_APP_KEY", "") ?: ""
+    fun setTikTokAppKey(key: String) = securePrefs.edit().putString("TIKTOK_APP_KEY", key).apply()
+    fun getTikTokAppSecret(): String = securePrefs.getString("TIKTOK_APP_SECRET", "") ?: ""
+    fun setTikTokAppSecret(secret: String) = securePrefs.edit().putString("TIKTOK_APP_SECRET", secret).apply()
+    fun getTikTokAccessToken(): String = securePrefs.getString("TIKTOK_ACCESS_TOKEN", "") ?: ""
+    fun setTikTokAccessToken(token: String) = securePrefs.edit().putString("TIKTOK_ACCESS_TOKEN", token).apply()
 }

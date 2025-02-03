@@ -3,18 +3,29 @@ package com.example.chatgptlauncher.services
 import android.content.Context
 import android.net.Uri
 import android.util.Log
+import com.example.chatgptlauncher.model.SocialPlatform
+import com.example.chatgptlauncher.services.upload.InstagramUploader
+import com.example.chatgptlauncher.services.upload.TikTokUploader
+import com.example.chatgptlauncher.services.upload.YouTubeUploader
+import com.example.chatgptlauncher.services.upload.VideoProcessor
+import com.example.chatgptlauncher.services.upload.ContentGenerator
+import com.example.chatgptlauncher.util.RetryManager
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import java.io.File
+import kotlin.time.Duration.Companion.seconds
 
 class UploadManager(
     private val context: Context,
     private val videoProcessor: VideoProcessor,
-    private val contentGenerator: ContentGenerator
+    private val contentGenerator: ContentGenerator,
+    private val youTubeUploader: YouTubeUploader,
+    private val instagramUploader: InstagramUploader,
+    private val tiktokUploader: TikTokUploader,
+    private val retryManager: RetryManager = RetryManager()
 ) {
     companion object {
         private const val TAG = "UploadManager"
-        private const val MAX_RETRIES = 3
     }
 
     data class UploadProgress(
@@ -32,17 +43,25 @@ class UploadManager(
         ERROR
     }
 
-    sealed class UploadResult {
-        data class Success(
-            val platform: SocialPlatform,
-            val url: String
-        ) : UploadResult()
+    sealed class UploadError : Exception() {
+        data class ProcessingError(
+            override val message: String,
+            override val cause: Throwable? = null
+        ) : UploadError()
         
-        data class Error(
-            val platform: SocialPlatform,
-            val message: String,
-            val exception: Exception? = null
-        ) : UploadResult()
+        data class ContentGenerationError(
+            override val message: String,
+            override val cause: Throwable? = null
+        ) : UploadError()
+        
+        data class UploadError(
+            override val message: String,
+            override val cause: Throwable? = null
+        ) : UploadError()
+        
+        data class ValidationError(
+            override val message: String
+        ) : UploadError()
     }
 
     fun uploadVideo(
@@ -55,50 +74,110 @@ class UploadManager(
         
         platforms.forEach { platform ->
             try {
-                // Process Video
+                // Process Video with retry
                 progressMap[platform] = UploadProgress(platform, UploadStage.PROCESSING, 0f)
                 emit(progressMap.toMap())
                 
-                val processResult = videoProcessor.processVideo(videoUri, platform) { progress ->
-                    progressMap[platform] = UploadProgress(platform, UploadStage.PROCESSING, progress)
-                    emit(progressMap.toMap())
-                }
+                val processResult = retryManager.retryNetworkOperation(
+                    maxAttempts = 3,
+                    operation = {
+                        videoProcessor.processVideo(videoUri, platform) { progress ->
+                            progressMap[platform] = UploadProgress(platform, UploadStage.PROCESSING, progress)
+                            emit(progressMap.toMap())
+                        }
+                    }
+                )
 
                 when (processResult) {
                     is VideoProcessor.ProcessingResult.Success -> {
-                        // Generate Content
+                        // Generate Content with retry
                         progressMap[platform] = UploadProgress(platform, UploadStage.GENERATING_CONTENT, 0f)
                         emit(progressMap.toMap())
                         
-                        val content = contentGenerator.generateContent(platform, isCharityAccount, videoContext)
+                        val content = retryManager.retryNetworkOperation(
+                            maxAttempts = 3,
+                            operation = {
+                                contentGenerator.generateContent(platform, isCharityAccount, videoContext)
+                            }
+                        )
                         
-                        // Upload
+                        // Upload with rate limit handling
                         progressMap[platform] = UploadProgress(platform, UploadStage.UPLOADING, 0f)
                         emit(progressMap.toMap())
                         
-                        // TODO: Implement platform-specific upload logic
-                        // This will be implemented for each platform using their respective APIs
+                        val uploadUrl = retryManager.retryWithRateLimit(
+                            maxAttempts = 5,
+                            rateLimitDelay = 60.seconds,
+                            operation = {
+                                when (platform) {
+                                    SocialPlatform.YOUTUBE -> youTubeUploader.upload(
+                                        processResult.processedFile,
+                                        content,
+                                        isCharityAccount
+                                    ) { progress ->
+                                        progressMap[platform] = UploadProgress(
+                                            platform,
+                                            UploadStage.UPLOADING,
+                                            progress
+                                        )
+                                        emit(progressMap.toMap())
+                                    }
+                                    
+                                    SocialPlatform.INSTAGRAM -> instagramUploader.upload(
+                                        processResult.processedFile,
+                                        content,
+                                        isCharityAccount
+                                    ) { progress ->
+                                        progressMap[platform] = UploadProgress(
+                                            platform,
+                                            UploadStage.UPLOADING,
+                                            progress
+                                        )
+                                        emit(progressMap.toMap())
+                                    }
+                                    
+                                    SocialPlatform.TIKTOK -> tiktokUploader.upload(
+                                        processResult.processedFile,
+                                        content,
+                                        isCharityAccount
+                                    ) { progress ->
+                                        progressMap[platform] = UploadProgress(
+                                            platform,
+                                            UploadStage.UPLOADING,
+                                            progress
+                                        )
+                                        emit(progressMap.toMap())
+                                    }
+                                }
+                            }
+                        )
                         
-                        progressMap[platform] = UploadProgress(platform, UploadStage.COMPLETED, 1f)
-                        emit(progressMap.toMap())
-                    }
-                    is VideoProcessor.ProcessingResult.Error -> {
                         progressMap[platform] = UploadProgress(
                             platform,
-                            UploadStage.ERROR,
-                            0f,
-                            processResult.message
+                            UploadStage.COMPLETED,
+                            1f,
+                            "Upload complete: $uploadUrl"
                         )
                         emit(progressMap.toMap())
+                    }
+                    
+                    is VideoProcessor.ProcessingResult.Error -> {
+                        throw UploadError.ProcessingError(processResult.message)
                     }
                 }
             } catch (e: Exception) {
                 Log.e(TAG, "Error uploading to $platform", e)
+                val errorMessage = when (e) {
+                    is UploadError -> e.message
+                    is ContentGenerator.GenerationError -> "Content generation failed: ${e.message}"
+                    else -> "Upload failed: ${e.message}"
+                }
+                
                 progressMap[platform] = UploadProgress(
                     platform,
                     UploadStage.ERROR,
                     0f,
-                    e.message ?: "Unknown error"
+                    errorMessage
                 )
                 emit(progressMap.toMap())
             }
