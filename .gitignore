@@ -4,8 +4,7 @@ __pycache__/
 *$py.class
 *.so
 .Python
-build/
-develop-eggs/
+env/
 dist/
 downloads/
 eggs/
@@ -64,6 +63,24 @@ htmlcov/
 Thumbs.db
 
 # Android
+.gradle/
+build/
+local.properties
+captures/
+.externalNativeBuild/
+.cxx/
+*.apk
+output.json
+*.iml
+misc.xml
+deploymentTargetDropDown.xml
+render.experimental.xml
+*.jks
+*.keystore
+google-services.json
+*.hprof
+server/secrets/
+*.env
 android/.gradle/
 android/build/
 android/app/build/

@@ -1,77 +1,66 @@
 # Dragon Suite
 
-Dragon Suite is a comprehensive automation toolkit designed to streamline and enhance your workflow. It combines powerful automation capabilities with intelligent processing to help you work more efficiently.
+A background Android service that enables video analysis through ChatGPT, controlled entirely through GPT Actions.
 
-## Features
+## Setup Instructions
 
-- **Task Automation**: Automate repetitive tasks and workflows
-- **Smart Processing**: Intelligent handling of data and processes
-- **Integration Ready**: Easy integration with existing tools and systems
-- **Customizable**: Flexible configuration to match your needs
-- **Secure**: Built with security best practices
+### 1. Firebase Setup
+1. Go to [Firebase Console](https://console.firebase.google.com)
+2. Create a new project named "Dragon Suite"
+3. Add an Android app with package name `com.example.dragonsuite`
+4. Download `google-services.json` and place it in the `android/app` directory
+5. Download the Firebase Admin SDK key and save it for the server setup
 
-## Installation
+### 2. Android App Setup
+1. Open the project in Android Studio
+2. Build and run the app once to register it with Firebase
+3. The app will run in the background with no UI
+4. Note the FCM token printed in the logs (you'll need this for GPT Actions)
 
-```bash
-# Clone the repository
-git clone https://github.com/yourusername/dragon-suite.git
+### 3. Server Setup
+1. Navigate to the `server` directory
+2. Create a `.env` file with:
+   ```
+   FIREBASE_ADMIN_SDK_PATH=/path/to/your/firebase-admin-sdk.json
+   PORT=5000
+   ```
+3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+4. Run the server:
+   ```bash
+   python app.py
+   ```
 
-# Navigate to the project directory
-cd dragon-suite
-
-# Install dependencies
-pip install -r requirements.txt
-```
-
-## Project Structure
-
-```
-dragon-suite/
-├── src/
-│   ├── core/           # Core functionality
-│   ├── automation/     # Automation modules
-│   ├── integrations/   # Third-party integrations
-│   └── utils/         # Utility functions
-├── tests/             # Test suite
-├── docs/              # Documentation
-├── examples/          # Example usage
-└── config/           # Configuration files
-```
-
-## Configuration
-
-1. Copy `.env.example` to `.env`
-2. Update the environment variables in `.env` with your settings
-3. Configure additional settings in `config/settings.py`
+### 4. GPT Actions Setup
+1. Create a new GPT in the GPT Store
+2. Add the contents of `gpt-actions/openapi.yaml` as an Action
+3. Configure the server URL in the Action settings
+4. The GPT can now control your Android app!
 
 ## Usage
 
-```python
-from dragon_suite import DragonSuite
+1. Start a chat with your custom GPT
+2. Share a video or video URL with the GPT
+3. The GPT will:
+   - Send the video to your Android app via FCM
+   - The app will analyze the video using GPT-4 Vision
+   - Results will appear as notifications on your device
+   - The GPT will receive and process the results
 
-# Initialize the suite
-dragon = DragonSuite()
+## Security Notes
 
-# Configure settings
-dragon.configure(config_path='path/to/config.yml')
+- The app uses Android Keystore for secure key storage
+- FCM tokens should be kept private
+- The server should be deployed with HTTPS
+- Add rate limiting in production
+- Use a proper database instead of in-memory storage
 
-# Run automation
-dragon.run_automation('task_name')
-```
+## Requirements
 
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Contact
-
-Your Name - [@yourusername](https://twitter.com/yourusername)
-Project Link: [https://github.com/yourusername/dragon-suite](https://github.com/yourusername/dragon-suite)
+- Android 8.0 (API 26) or higher
+- Python 3.8+ for the server
+- Firebase project
+- OpenAI API key
+- Custom GPT with Actions enabled

@@ -1,0 +1,77 @@
+openapi: 3.0.0
+info:
+  title: Dragon Suite API
+  description: API for controlling the Dragon Suite Android app
+  version: 1.0.0
+servers:
+  - url: https://your-server.com/api/v1
+paths:
+  /analyze-video:
+    post:
+      summary: Analyze a video using the Dragon Suite app
+      description: Send a command to the Android app to analyze a video file
+      operationId: analyzeVideo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - deviceToken
+                - videoUri
+              properties:
+                deviceToken:
+                  type: string
+                  description: The FCM device token of the target Android device
+                videoUri:
+                  type: string
+                  description: The URI of the video to analyze
+                uploadUrl:
+                  type: string
+                  description: Optional URL to upload the video to
+      responses:
+        '200':
+          description: Command sent successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+        '400':
+          description: Invalid request
+        '500':
+          description: Server error
+
+  /device-token:
+    post:
+      summary: Register a new device token
+      description: Register or update an FCM device token for a specific device
+      operationId: registerDeviceToken
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - deviceToken
+                - deviceId
+              properties:
+                deviceToken:
+                  type: string
+                  description: The FCM device token
+                deviceId:
+                  type: string
+                  description: Unique identifier for the device
+      responses:
+        '200':
+          description: Token registered successfully
+        '400':
+          description: Invalid request
+        '500':
+          description: Server error
