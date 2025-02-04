@@ -16,8 +16,7 @@
         <service
             android:name=".DragonService"
             android:enabled="true"
-            android:exported="false"
-            android:foregroundServiceType="dataSync" />
+            android:exported="false" />
 
         <service
             android:name=".service.DragonFirebaseMessagingService"
