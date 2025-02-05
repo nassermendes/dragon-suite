@@ -27,7 +27,7 @@ android {
             // Firebase App Distribution
             firebaseAppDistribution {
                 releaseNotes = "Latest version with OpenAI integration and improved error handling"
-                testers = "your-email@example.com"  // Add your email here
+                testers = "nassermendes@gmail.com"
                 groups = "testers"
             }
         }
@@ -38,7 +38,7 @@ android {
             // Firebase App Distribution for debug builds
             firebaseAppDistribution {
                 releaseNotes = "Debug build with latest changes"
-                testers = "your-email@example.com"  // Add your email here
+                testers = "nassermendes@gmail.com"
                 groups = "testers"
             }
         }

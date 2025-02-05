@@ -16,27 +16,15 @@ def read_file_base64(file_path):
 def get_firebase_token():
     """Get Firebase CLI token."""
     try:
-        # Get the full path to firebase.cmd
-        npm_path = subprocess.run(['where', 'npm'], capture_output=True, text=True).stdout.strip()
-        npm_dir = os.path.dirname(npm_path)
-        firebase_path = os.path.join(npm_dir, 'firebase.cmd')
-        
-        if not os.path.exists(firebase_path):
-            print(f"Firebase CLI not found at {firebase_path}")
-            return None
-        
-        # First check if we're already logged in
-        result = subprocess.run([firebase_path, 'projects:list'], 
+        # Try to get a CI token
+        result = subprocess.run('npx firebase-tools login:ci --no-localhost', 
+                              shell=True,
                               capture_output=True, 
                               text=True)
+        
         if result.returncode == 0:
-            # We're logged in, get a CI token
-            result = subprocess.run([firebase_path, 'login:ci', '--no-localhost'], 
-                                  capture_output=True, 
-                                  text=True)
-            if result.returncode == 0:
-                # Extract token from output
-                return result.stdout.strip()
+            # Extract token from output
+            return result.stdout.strip()
         
         print("Error getting Firebase token:")
         print(result.stderr)
