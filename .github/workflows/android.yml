@@ -63,17 +63,32 @@ jobs:
           cat service-account.json | grep "type"
           cat service-account.json | grep "project_id"
 
+      - name: Verify Firebase Distribution Setup
+        if: success()
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/service-account.json
+          FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+        run: |
+          echo "=== Verifying Firebase Distribution Groups ==="
+          # List available groups
+          GROUPS=$(firebase appdistribution:groups:list --project $FIREBASE_PROJECT_ID --json || echo '[]')
+          echo "Available groups:"
+          echo "$GROUPS"
+          
+          # Check if testers group exists
+          if echo "$GROUPS" | grep -q '"name":"testers"'; then
+            echo " 'testers' group found"
+          else
+            echo " 'testers' group not found. Please create it in Firebase Console."
+            exit 1
+          fi
+
       - name: Upload to Firebase App Distribution
         if: success()
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/service-account.json
           FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
         run: |
-          # Verify environment
-          echo "Using service account from: $GOOGLE_APPLICATION_CREDENTIALS"
-          echo "Project ID: $FIREBASE_PROJECT_ID"
-          echo "App ID: $FIREBASE_APP_ID"
-          
           # Upload APK
           firebase appdistribution:distribute android/app/build/outputs/apk/debug/app-debug.apk \
             --app "$FIREBASE_APP_ID" \
