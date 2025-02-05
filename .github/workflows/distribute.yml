@@ -1,4 +1,4 @@
-name: Build and Distribute App
+name: Android Build
 
 on:
   push:
@@ -10,11 +10,8 @@ on:
 
 jobs:
   build:
-    name: Build and Distribute Android App
+    name: Build APK
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      checks: write
     steps:
       - uses: actions/checkout@v4
 
@@ -23,7 +20,6 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
-          cache: 'gradle'
 
       - name: Decode google-services.json
         env:
@@ -31,11 +27,6 @@ jobs:
         run: |
           echo $GOOGLE_SERVICES_JSON | base64 -d > android/app/google-services.json
           ls -la android/app/google-services.json
-
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v3
-        with:
-          gradle-version: 8.2
 
       - name: Grant execute permission for gradlew
         run: chmod +x android/gradlew
@@ -47,14 +38,17 @@ jobs:
           ./gradlew assembleDebug --stacktrace
           ls -la app/build/outputs/apk/debug/
 
-      - name: Upload APK to Firebase App Distribution
-        uses: wzieba/Firebase-Distribution-Github-Action@v1.7.0
-        with:
-          appId: ${{ secrets.FIREBASE_APP_ID }}
-          token: ${{ secrets.FIREBASE_TOKEN }}
-          groups: testers
-          file: android/app/build/outputs/apk/debug/app-debug.apk
-          releaseNotes: "Debug build with latest changes"
+      - name: Upload APK to Firebase
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
+        run: |
+          curl -sL https://firebase.tools | bash
+          firebase appdistribution:distribute android/app/build/outputs/apk/debug/app-debug.apk \
+            --app $FIREBASE_APP_ID \
+            --token "$FIREBASE_TOKEN" \
+            --groups "testers" \
+            --release-notes "Debug build with latest changes"
 
       - name: Clean up secrets
         if: always()
