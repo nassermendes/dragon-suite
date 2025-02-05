@@ -23,11 +23,24 @@ def set_secret(name, value):
 
 def main():
     # Read and encode files
-    google_services = read_file_base64('android/app/google-services.json')
-    service_account = read_file_base64('firebase-service-account.json')
+    print("🔐 Reading and encoding files...")
+    try:
+        google_services = read_file_base64('android/app/google-services.json')
+        print("✅ Encoded google-services.json")
+    except Exception as e:
+        print(f"❌ Error encoding google-services.json: {e}")
+        return
+
+    try:
+        service_account = read_file_base64('firebase-service-account.json')
+        print("✅ Encoded firebase-service-account.json")
+    except Exception as e:
+        print(f"❌ Error encoding firebase-service-account.json: {e}")
+        return
+
     firebase_token = "1//03Ifokq8vu57ZCgYIARAAGAMSNwF-L9IrJApmPtsjTyB9GTMHmGoRsgyo2kLgFYr-GlufEmhcuL8Bd3MClYhhM3NfzX7E3lQVs3o"
 
-    print("🔐 Setting up GitHub secrets...")
+    print("\n🔐 Setting up GitHub secrets...")
     
     # Set secrets
     set_secret('GOOGLE_SERVICES_JSON', google_services)
