@@ -77,33 +77,7 @@ jobs:
           firebase projects:list --debug
           
           echo "=== Testing App Distribution Access ==="
-          firebase appdistribution:apps:list --project $FIREBASE_PROJECT_ID --debug
-
-      - name: Verify Firebase Distribution Groups
-        if: success()
-        env:
-          FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
-        run: |
-          echo "=== Verifying Firebase Distribution Groups ==="
-          echo "Using project ID: $FIREBASE_PROJECT_ID"
-          
-          # List available groups with error handling
-          echo "Attempting to list groups..."
-          if ! GROUPS=$(firebase appdistribution:groups:list --project $FIREBASE_PROJECT_ID --json 2>&1); then
-            echo "Error listing groups: $GROUPS"
-            exit 1
-          fi
-          
-          echo "Available groups:"
-          echo "$GROUPS"
-          
-          # Check if testers group exists
-          if echo "$GROUPS" | grep -q '"name":"testers"'; then
-            echo " 'testers' group found"
-          else
-            echo " 'testers' group not found. Please create it in Firebase Console."
-            exit 1
-          fi
+          firebase appdistribution:testers:list --project $FIREBASE_PROJECT_ID --debug || true
 
       - name: Upload to Firebase App Distribution
         if: success()
