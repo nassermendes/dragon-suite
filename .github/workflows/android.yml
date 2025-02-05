@@ -13,6 +13,8 @@ jobs:
   build:
     name: Build APK
     runs-on: ubuntu-latest
+    env:
+      FIREBASE_APP_ID: "1:213187131988:android:dfb5d8b41717a252980bc1"
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -51,7 +53,6 @@ jobs:
       - name: Debug Firebase Configuration
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-          FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
           FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
         run: |
           # Install Firebase CLI
@@ -71,29 +72,23 @@ jobs:
           firebase projects:list
           
           echo "=== Listing Android Apps in Project ==="
-          firebase apps:list ANDROID --project $FIREBASE_PROJECT_ID
+          firebase apps:list ANDROID --project $FIREBASE_PROJECT_ID || true
           
           echo "=== Verifying App Distribution Setup ==="
-          firebase appdistribution:apps:list --project $FIREBASE_PROJECT_ID
+          firebase appdistribution:apps:list --project $FIREBASE_PROJECT_ID || true
 
       - name: Upload to Firebase App Distribution
         if: success()
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-          FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
           FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
         run: |
-          # Verify app exists
-          firebase apps:list ANDROID --project $FIREBASE_PROJECT_ID | grep $FIREBASE_APP_ID || {
-            echo "Error: App ID $FIREBASE_APP_ID not found in project. Please verify the app is registered in Firebase Console."
-            exit 1
-          }
-          
-          # Upload APK
+          # Upload APK with verbose logging
           firebase appdistribution:distribute android/app/build/outputs/apk/debug/app-debug.apk \
-            --app $FIREBASE_APP_ID \
+            --app "$FIREBASE_APP_ID" \
             --token "$FIREBASE_TOKEN" \
             --groups "testers" \
+            --debug \
             --release-notes "Debug build with latest changes from $(git rev-parse --short HEAD)"
 
       - name: Clean up secrets

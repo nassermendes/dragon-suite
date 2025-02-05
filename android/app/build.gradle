@@ -14,7 +14,7 @@ android {
         buildConfigField "String", "OPENAI_API_KEY", "\"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\""
         minSdk 24
         targetSdk 34
-        versionCode 45
+        versionCode 46
         versionName "1.0.0"
     }
 
