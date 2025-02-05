@@ -53,13 +53,12 @@ jobs:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
           FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
         run: |
-          echo "Uploading APK to Firebase App Distribution..."
-          echo "App ID: $FIREBASE_APP_ID"
-          firebase appdistribution:distribute android/app/build/outputs/apk/debug/app-debug.apk \
-            --app $FIREBASE_APP_ID \
-            --token "$FIREBASE_TOKEN" \
-            --groups "testers" \
-            --release-notes "Debug build with latest changes"
+          cd android
+          ./gradlew appDistributionUploadDebug \
+            --app-id=$FIREBASE_APP_ID \
+            --firebase-token=$FIREBASE_TOKEN \
+            --release-notes="Debug build with latest changes" \
+            --groups="testers"
 
       - name: Notify on Success
         if: success()
