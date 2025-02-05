@@ -1,0 +1,4 @@
+@echo off
+set OPENAI_API_KEY=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
+python test_openai.py
+pause

@@ -1,0 +1,35 @@
+Testing OpenAI API integration with retry mechanism...
+Traceback (most recent call last):
+  File "C:\Users\nasse\CascadeProjects\dragon-suite\test_openai.py", line 18, in test_openai_integration
+    response = openai.ChatCompletion.create(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nasse\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\openai\_utils\_proxy.py", line 22, in __getattr__
+    return getattr(self.__get_proxied__(), attr)
+                   ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nasse\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\openai\_utils\_proxy.py", line 43, in __get_proxied__
+    return self.__load__()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\nasse\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\openai\lib\_old_api.py", line 33, in __load__
+    raise APIRemovedInV1(symbol=self._symbol)
+openai.lib._old_api.APIRemovedInV1: 
+
+You tried to access openai.ChatCompletion, but this is no longer supported in openai>=1.0.0 - see the README at https://github.com/openai/openai-python for the API.
+
+You can run `openai migrate` to automatically upgrade your codebase to use the 1.0.0 interface. 
+
+Alternatively, you can pin your installation to the old version, e.g. `pip install openai==0.28`
+
+A detailed migration guide is available here: https://github.com/openai/openai-python/discussions/742
+
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\nasse\CascadeProjects\dragon-suite\test_openai.py", line 40, in <module>
+    success = test_openai_integration()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nasse\CascadeProjects\dragon-suite\test_openai.py", line 25, in test_openai_integration
+    except openai.error.RateLimitError as e:
+           ^^^^^^^^^^^^
+AttributeError: module 'openai' has no attribute 'error'
+Press any key to continue . . . 
