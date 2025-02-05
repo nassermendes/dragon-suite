@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'com.google.gms.google-services'
+    id 'com.google.firebase.appdistribution'
 }
 
 android {
@@ -22,10 +23,24 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            
+            // Firebase App Distribution
+            firebaseAppDistribution {
+                releaseNotes = "Latest version with OpenAI integration and improved error handling"
+                testers = "your-email@example.com"  // Add your email here
+                groups = "testers"
+            }
         }
         debug {
             minifyEnabled false
             shrinkResources false
+            
+            // Firebase App Distribution for debug builds
+            firebaseAppDistribution {
+                releaseNotes = "Debug build with latest changes"
+                testers = "your-email@example.com"  // Add your email here
+                groups = "testers"
+            }
         }
     }
     
@@ -50,6 +65,7 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:32.7.1')
     implementation 'com.google.firebase:firebase-messaging'
     implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-app-distribution'
     
     // Core Android - minimal set
     implementation 'androidx.core:core-ktx:1.12.0'
