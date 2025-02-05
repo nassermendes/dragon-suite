@@ -63,10 +63,11 @@ jobs:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
           FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
         run: |
-          cd android
-          ./gradlew appDistributionUploadDebug \
-            -PfirebaseAppId=$FIREBASE_APP_ID \
-            -PfirebaseToken=$FIREBASE_TOKEN
+          firebase appdistribution:distribute android/app/build/outputs/apk/debug/app-debug.apk \
+            --app $FIREBASE_APP_ID \
+            --token "$FIREBASE_TOKEN" \
+            --groups "testers" \
+            --release-notes "Debug build with latest changes"
 
       - name: Notify on Success
         if: success()
