@@ -50,7 +50,7 @@ jobs:
           ./gradlew assembleDebug --stacktrace
           ls -la app/build/outputs/apk/debug/
 
-      - name: Setup Firebase CLI and authenticate
+      - name: Setup Firebase CLI
         run: |
           # Install Firebase CLI
           curl -sL https://firebase.tools | bash
@@ -58,20 +58,42 @@ jobs:
           # Create service account key file
           echo '${{ secrets.FIREBASE_SERVICE_CREDENTIALS }}' > service-account.json
           
-          # Verify service account file
-          echo "Service account file contents:"
-          cat service-account.json | grep "type"
-          cat service-account.json | grep "project_id"
+          # Set environment variable for all subsequent steps
+          echo "GOOGLE_APPLICATION_CREDENTIALS=$GITHUB_WORKSPACE/service-account.json" >> $GITHUB_ENV
+          
+          # Test Firebase CLI
+          firebase --version
 
-      - name: Verify Firebase Distribution Setup
+      - name: Debug Firebase Authentication
+        env:
+          FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+        run: |
+          echo "=== Testing Firebase Authentication ==="
+          echo "Project ID: $FIREBASE_PROJECT_ID"
+          echo "Service account path: $GOOGLE_APPLICATION_CREDENTIALS"
+          echo "Service account exists: $(test -f $GOOGLE_APPLICATION_CREDENTIALS && echo 'Yes' || echo 'No')"
+          
+          # Test authentication
+          firebase projects:list --debug
+          
+          echo "=== Testing App Distribution Access ==="
+          firebase appdistribution:apps:list --project $FIREBASE_PROJECT_ID --debug
+
+      - name: Verify Firebase Distribution Groups
         if: success()
         env:
-          GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/service-account.json
           FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
         run: |
           echo "=== Verifying Firebase Distribution Groups ==="
-          # List available groups
-          GROUPS=$(firebase appdistribution:groups:list --project $FIREBASE_PROJECT_ID --json || echo '[]')
+          echo "Using project ID: $FIREBASE_PROJECT_ID"
+          
+          # List available groups with error handling
+          echo "Attempting to list groups..."
+          if ! GROUPS=$(firebase appdistribution:groups:list --project $FIREBASE_PROJECT_ID --json 2>&1); then
+            echo "Error listing groups: $GROUPS"
+            exit 1
+          fi
+          
           echo "Available groups:"
           echo "$GROUPS"
           
@@ -86,10 +108,9 @@ jobs:
       - name: Upload to Firebase App Distribution
         if: success()
         env:
-          GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/service-account.json
           FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
         run: |
-          # Upload APK
+          # Upload APK with full debug output
           firebase appdistribution:distribute android/app/build/outputs/apk/debug/app-debug.apk \
             --app "$FIREBASE_APP_ID" \
             --groups "testers" \
