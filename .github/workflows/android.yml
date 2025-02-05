@@ -22,6 +22,14 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: Create debug keystore
+        working-directory: ./android/app
+        run: |
+          keytool -genkey -v -keystore debug.keystore \
+            -storepass android -alias androiddebugkey \
+            -keypass android -keyalg RSA -keysize 2048 \
+            -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
+
       - name: Decode google-services.json
         env:
           GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
@@ -55,4 +63,6 @@ jobs:
 
       - name: Clean up secrets
         if: always()
-        run: rm -f android/app/google-services.json
+        run: |
+          rm -f android/app/google-services.json
+          rm -f android/app/debug.keystore
