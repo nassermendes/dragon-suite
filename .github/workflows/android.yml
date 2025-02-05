@@ -48,23 +48,40 @@ jobs:
           ./gradlew assembleDebug --stacktrace
           ls -la app/build/outputs/apk/debug/
 
-      - name: Setup Firebase CLI
+      - name: Setup Firebase CLI and authenticate
         run: |
+          # Install Firebase CLI
           curl -sL https://firebase.tools | bash
+          
+          # Save service account key
           echo '${{ secrets.FIREBASE_SERVICE_CREDENTIALS }}' > firebase-service-account.json
+          
+          # Set environment variables
           export GOOGLE_APPLICATION_CREDENTIALS=firebase-service-account.json
-          firebase --token '${{ secrets.FIREBASE_TOKEN }}' projects:list
+          export FIREBASE_TOKEN='${{ secrets.FIREBASE_TOKEN }}'
+          
+          # Verify Firebase configuration
+          firebase projects:list
+          firebase apps:list --project $(cat firebase-service-account.json | jq -r .project_id)
 
       - name: Upload to Firebase App Distribution
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
           FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
+          FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
         run: |
+          # Verify app exists
+          firebase apps:list ANDROID --project $FIREBASE_PROJECT_ID | grep $FIREBASE_APP_ID || {
+            echo "Error: App ID $FIREBASE_APP_ID not found in project. Please verify the app is registered in Firebase Console."
+            exit 1
+          }
+          
+          # Upload APK
           firebase appdistribution:distribute android/app/build/outputs/apk/debug/app-debug.apk \
             --app $FIREBASE_APP_ID \
             --token "$FIREBASE_TOKEN" \
             --groups "testers" \
-            --release-notes "Debug build with latest changes"
+            --release-notes "Debug build with latest changes from $(git rev-parse --short HEAD)"
 
       - name: Clean up secrets
         if: always()
