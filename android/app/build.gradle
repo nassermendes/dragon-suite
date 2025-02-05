@@ -20,31 +20,15 @@ android {
         buildConfigField "String", "OPENAI_API_KEY", "\"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\""
         minSdk 24
         targetSdk 34
-        versionCode 17
+        versionCode 18
         versionName "1.0.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
-        release {
-            minifyEnabled true
-            shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            
-            // Firebase App Distribution
-            firebaseAppDistribution {
-                artifactType = "APK"
-                releaseNotes = "Latest version with OpenAI integration, improved error handling, and automated versioning"
-                testers = "nassermendes@gmail.com"
-                groups = "testers"
-            }
-        }
         debug {
             debuggable true
             minifyEnabled false
-            shrinkResources false
-            
-            // Firebase App Distribution for debug builds
             firebaseAppDistribution {
                 artifactType = "APK"
                 releaseNotes = "Debug build with latest changes"
@@ -58,21 +42,9 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    
     kotlinOptions {
         jvmTarget = '1.8'
     }
-
-    buildFeatures {
-        buildConfig true
-        viewBinding false
-        compose false
-    }
-}
-
-buildScan {
-    termsOfServiceUrl = 'https://gradle.com/terms-of-service'
-    termsOfServiceAgree = 'yes'
 }
 
 dependencies {
