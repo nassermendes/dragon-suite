@@ -16,16 +16,22 @@ def read_file_base64(file_path):
 def get_firebase_token():
     """Get Firebase CLI token."""
     try:
-        result = subprocess.run(['firebase', 'login:ci'], 
+        # First check if we're already logged in
+        result = subprocess.run(['firebase', 'projects:list'], 
                               capture_output=True, 
                               text=True)
         if result.returncode == 0:
-            # Extract token from output
-            return result.stdout.strip()
-        else:
-            print("Error getting Firebase token:")
-            print(result.stderr)
-            return None
+            # We're logged in, get a CI token
+            result = subprocess.run(['firebase', 'login:ci', '--no-localhost'], 
+                                  capture_output=True, 
+                                  text=True)
+            if result.returncode == 0:
+                # Extract token from output
+                return result.stdout.strip()
+        
+        print("Error getting Firebase token:")
+        print(result.stderr)
+        return None
     except Exception as e:
         print(f"Error running Firebase CLI: {e}")
         return None
