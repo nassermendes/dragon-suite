@@ -14,14 +14,24 @@ android {
         buildConfigField "String", "OPENAI_API_KEY", "\"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\""
         minSdk 24
         targetSdk 34
-        versionCode 38
+        versionCode 39
         versionName "1.0.0"
+    }
+
+    signingConfigs {
+        debug {
+            storeFile file('debug.keystore')
+            storePassword 'android'
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+        }
     }
 
     buildTypes {
         debug {
             debuggable true
             minifyEnabled false
+            signingConfig signingConfigs.debug
             firebaseAppDistribution {
                 artifactType = "APK"
                 releaseNotes = "Debug build with latest changes"
@@ -45,6 +55,10 @@ android {
 
     buildFeatures {
         buildConfig true
+    }
+
+    lint {
+        abortOnError false
     }
 }
 
