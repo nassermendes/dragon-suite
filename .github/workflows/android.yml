@@ -47,19 +47,14 @@ jobs:
           ./gradlew assembleDebug --stacktrace
           ls -la app/build/outputs/apk/debug/
 
-      - name: Install Firebase CLI
-        run: npm install -g firebase-tools
-
-      - name: Upload APK to Firebase
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-          FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
-        run: |
-          firebase appdistribution:distribute android/app/build/outputs/apk/debug/app-debug.apk \
-            --app $FIREBASE_APP_ID \
-            --token "$FIREBASE_TOKEN" \
-            --groups "testers" \
-            --release-notes "Debug build with latest changes"
+      - name: Upload to Firebase App Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1.7.0
+        with:
+          appId: ${{ secrets.FIREBASE_APP_ID }}
+          serviceCredentialsFileContent: ${{ secrets.FIREBASE_SERVICE_CREDENTIALS }}
+          groups: testers
+          file: android/app/build/outputs/apk/debug/app-debug.apk
+          releaseNotes: "Debug build with latest changes"
 
       - name: Clean up secrets
         if: always()
