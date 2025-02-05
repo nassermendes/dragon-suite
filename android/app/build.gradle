@@ -5,6 +5,12 @@ plugins {
     id 'com.google.firebase.appdistribution'
 }
 
+repositories {
+    google()
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
+}
+
 android {
     namespace 'com.example.dragonsuite'
     compileSdk 34
@@ -14,7 +20,7 @@ android {
         buildConfigField "String", "OPENAI_API_KEY", "\"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\""
         minSdk 24
         targetSdk 34
-        versionCode 12
+        versionCode 13
         versionName "1.0.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
