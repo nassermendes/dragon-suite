@@ -48,7 +48,11 @@ jobs:
           ./gradlew assembleDebug --stacktrace
           ls -la app/build/outputs/apk/debug/
 
-      - name: Setup Firebase CLI and authenticate
+      - name: Debug Firebase Configuration
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
+          FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
         run: |
           # Install Firebase CLI
           curl -sL https://firebase.tools | bash
@@ -58,13 +62,22 @@ jobs:
           
           # Set environment variables
           export GOOGLE_APPLICATION_CREDENTIALS=firebase-service-account.json
-          export FIREBASE_TOKEN='${{ secrets.FIREBASE_TOKEN }}'
           
-          # Verify Firebase configuration
+          echo "=== Firebase Project Information ==="
+          echo "Project ID: $FIREBASE_PROJECT_ID"
+          echo "App ID: $FIREBASE_APP_ID"
+          
+          echo "=== Listing Firebase Projects ==="
           firebase projects:list
-          firebase apps:list --project $(cat firebase-service-account.json | jq -r .project_id)
+          
+          echo "=== Listing Android Apps in Project ==="
+          firebase apps:list ANDROID --project $FIREBASE_PROJECT_ID
+          
+          echo "=== Verifying App Distribution Setup ==="
+          firebase appdistribution:apps:list --project $FIREBASE_PROJECT_ID
 
       - name: Upload to Firebase App Distribution
+        if: success()
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
           FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
