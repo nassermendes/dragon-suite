@@ -1,0 +1,70 @@
+# Dragon Suite Interactions Configuration
+
+app_config:
+  name: "Dragon Suite"
+  version: "1.0.0"
+  supported_languages:
+    - en-US
+    - en-GB
+  default_language: "en-US"
+
+voice_commands:
+  recording:
+    - trigger: "start recording"
+      action: "START_RECORDING"
+      response: "Starting video recording"
+    - trigger: "stop recording"
+      action: "STOP_RECORDING"
+      response: "Recording stopped"
+    - trigger: "pause recording"
+      action: "PAUSE_RECORDING"
+      response: "Recording paused"
+
+interactions:
+  basic_usage:
+    - question: "How do I start recording?"
+      response:
+        steps:
+          - "Open the app"
+          - "Tap the camera icon"
+          - "Choose your recording quality"
+          - "Press the red record button"
+        tips:
+          - "Use voice commands by saying 'Start recording' for hands-free operation"
+        related_commands:
+          - "start recording"
+    
+    - question: "My voice commands aren't working"
+      response:
+        troubleshooting:
+          - "Check microphone permissions"
+          - "Verify internet connection"
+          - "Try speaking clearly and at a moderate pace"
+          - "Make sure you're in a quiet environment"
+        fallback: "If issues persist, try restarting the app"
+        required_permissions:
+          - android.permission.RECORD_AUDIO
+          - android.permission.INTERNET
+
+error_handling:
+  permission_denied:
+    message: "Please grant necessary permissions in app settings"
+    action: "OPEN_SETTINGS"
+  network_error:
+    message: "Please check your internet connection"
+    action: "CHECK_CONNECTIVITY"
+
+gpt_integration:
+  model: "gpt-4"
+  max_tokens: 150
+  temperature: 0.7
+  context_retention: true
+  system_prompt: "You are the Dragon Suite Assistant, helping users with video recording and app features."
+
+firebase_config:
+  fcm_enabled: true
+  background_upload: true
+  notification_channel:
+    id: "dragon_suite_channel"
+    name: "Dragon Suite Notifications"
+    importance: "high"
