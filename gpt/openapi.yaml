@@ -1,0 +1,126 @@
+openapi: 3.0.0
+info:
+  title: Dragon Suite API
+  description: API for controlling Dragon Suite video recording and app features
+  version: 1.0.0
+servers:
+  - url: https://api.dragonsuite.app/v1
+    description: Dragon Suite API server
+paths:
+  /recording/start:
+    post:
+      summary: Start video recording
+      description: Initiates video recording with specified quality settings
+      operationId: startRecording
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quality:
+                  type: string
+                  enum: [high, medium, low]
+                  description: Recording quality setting
+      responses:
+        '200':
+          description: Recording started successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "recording"
+                  sessionId:
+                    type: string
+                    example: "rec_123456"
+
+  /recording/stop:
+    post:
+      summary: Stop video recording
+      description: Stops the current video recording session
+      operationId: stopRecording
+      responses:
+        '200':
+          description: Recording stopped successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "stopped"
+                  duration:
+                    type: integer
+                    description: Recording duration in seconds
+                    example: 120
+
+  /voice-command:
+    post:
+      summary: Execute voice command
+      description: Process and execute voice commands for the app
+      operationId: executeVoiceCommand
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                command:
+                  type: string
+                  description: Voice command text
+                  example: "start recording"
+      responses:
+        '200':
+          description: Command executed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  action:
+                    type: string
+                    example: "START_RECORDING"
+                  status:
+                    type: string
+                    example: "success"
+
+  /settings/check:
+    get:
+      summary: Check app settings and permissions
+      description: Verify app permissions and settings status
+      operationId: checkSettings
+      responses:
+        '200':
+          description: Settings status retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  permissions:
+                    type: object
+                    properties:
+                      microphone:
+                        type: boolean
+                      storage:
+                        type: boolean
+                  fcmEnabled:
+                    type: boolean
+                  uploadEnabled:
+                    type: boolean
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - BearerAuth: []
