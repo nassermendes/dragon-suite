@@ -1,8 +1,8 @@
-openapi: 3.0.0
+openapi: 3.1.0
 info:
   title: Dragon Suite API
   description: API for controlling Dragon Suite video recording and app features
-  version: 1.0.0
+  version: 2.0.0
 servers:
   - url: https://api.dragonsuite.app/v1
     description: Dragon Suite API server
@@ -17,26 +17,14 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                quality:
-                  type: string
-                  enum: [high, medium, low]
-                  description: Recording quality setting
+              $ref: '#/components/schemas/RecordingSettings'
       responses:
         '200':
           description: Recording started successfully
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: "recording"
-                  sessionId:
-                    type: string
-                    example: "rec_123456"
+                $ref: '#/components/schemas/RecordingStatus'
 
   /recording/stop:
     post:
@@ -49,15 +37,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: "stopped"
-                  duration:
-                    type: integer
-                    description: Recording duration in seconds
-                    example: 120
+                $ref: '#/components/schemas/RecordingResult'
 
   /voice-command:
     post:
@@ -69,26 +49,14 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                command:
-                  type: string
-                  description: Voice command text
-                  example: "start recording"
+              $ref: '#/components/schemas/VoiceCommand'
       responses:
         '200':
           description: Command executed successfully
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  action:
-                    type: string
-                    example: "START_RECORDING"
-                  status:
-                    type: string
-                    example: "success"
+                $ref: '#/components/schemas/CommandResult'
 
   /settings/check:
     get:
@@ -101,21 +69,100 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  permissions:
-                    type: object
-                    properties:
-                      microphone:
-                        type: boolean
-                      storage:
-                        type: boolean
-                  fcmEnabled:
-                    type: boolean
-                  uploadEnabled:
-                    type: boolean
+                $ref: '#/components/schemas/SettingsStatus'
 
 components:
+  schemas:
+    RecordingSettings:
+      type: object
+      properties:
+        quality:
+          type: string
+          enum: [high, medium, low]
+          description: Recording quality setting
+      required:
+        - quality
+
+    RecordingStatus:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [recording, stopped, paused]
+        sessionId:
+          type: string
+          description: Unique identifier for the recording session
+      required:
+        - status
+        - sessionId
+
+    RecordingResult:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [stopped, failed]
+        duration:
+          type: integer
+          description: Recording duration in seconds
+        fileSize:
+          type: integer
+          description: Size of the recorded file in bytes
+      required:
+        - status
+        - duration
+
+    VoiceCommand:
+      type: object
+      properties:
+        command:
+          type: string
+          description: Voice command text
+        language:
+          type: string
+          default: en-US
+          description: Language code for voice recognition
+      required:
+        - command
+
+    CommandResult:
+      type: object
+      properties:
+        action:
+          type: string
+          description: Action executed by the command
+        status:
+          type: string
+          enum: [success, failed]
+        message:
+          type: string
+          description: Additional information about the command execution
+      required:
+        - action
+        - status
+
+    SettingsStatus:
+      type: object
+      properties:
+        permissions:
+          type: object
+          properties:
+            microphone:
+              type: boolean
+            storage:
+              type: boolean
+          required:
+            - microphone
+            - storage
+        fcmEnabled:
+          type: boolean
+        uploadEnabled:
+          type: boolean
+      required:
+        - permissions
+        - fcmEnabled
+        - uploadEnabled
+
   securitySchemes:
     BearerAuth:
       type: http
