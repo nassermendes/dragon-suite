@@ -3,53 +3,86 @@ const { test, expect } = require('@playwright/test');
 
 test.describe('Social Media Integration', () => {
   test.beforeEach(async ({ page }) => {
-    // Navigate to the test activity
-    await page.goto('http://localhost:8080/test');
+    // Enable console logging
+    page.on('console', msg => console.log('Browser log:', msg.text()));
+
+    // Navigate to the test activity and ensure it loads
+    await page.goto('/test');
+    await expect(page.getByRole('heading', { name: 'Connection Test' })).toBeVisible();
   });
 
   test('should display connection status for all platforms', async ({ page }) => {
-    // Click the test connections button using role
-    await page.getByRole('button', { name: 'Test Connections' }).click();
+    // Click the test connections button
+    const testButton = page.getByRole('button', { name: 'Test Connections' });
+    await expect(testButton).toBeVisible();
+    await testButton.click();
 
-    // Wait for and verify Instagram connection
-    const instagramStatus = page.getByRole('status', { name: /Instagram/ });
-    await expect(instagramStatus).toBeVisible();
-    await expect(instagramStatus).toHaveText(/Instagram/);
+    // Wait for loading state
+    const loading = page.locator('#loading');
+    await expect(loading).toHaveClass(/active/);
 
-    // Wait for and verify YouTube connection
-    const youtubeStatus = page.getByRole('status', { name: /YouTube/ });
-    await expect(youtubeStatus).toBeVisible();
-    await expect(youtubeStatus).toHaveText(/YouTube/);
+    // Wait for results to be populated
+    const results = page.locator('#results');
+    await expect(results).toBeVisible();
 
-    // Wait for and verify TikTok connection
-    const tiktokStatus = page.getByRole('status', { name: /TikTok/ });
-    await expect(tiktokStatus).toBeVisible();
-    await expect(tiktokStatus).toHaveText(/TikTok/);
+    // Wait for all connection statuses to appear
+    const statuses = [
+      'instagram: connected - Instagram connection successful',
+      'youtube: connected - YouTube connection successful',
+      'tiktok: connected - TikTok connection successful'
+    ];
+
+    for (const status of statuses) {
+      await expect(page.locator('.connection-status', {
+        hasText: status
+      })).toBeVisible({ timeout: 10000 });
+    }
+
+    // Verify loading state is gone
+    await expect(loading).not.toHaveClass(/active/);
   });
 
   test('should handle network failures gracefully', async ({ page }) => {
-    // Simulate offline mode
-    await page.route('**/*', route => route.abort('failed'));
+    // Mock failed API response with delay
+    await page.route('/api/test-connections', async route => {
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      route.fulfill({
+        status: 500,
+        contentType: 'application/json',
+        body: JSON.stringify({ error: 'Failed to connect to services' })
+      });
+    });
     
     // Click the test connections button
-    await page.getByRole('button', { name: 'Test Connections' }).click();
+    const testButton = page.getByRole('button', { name: 'Test Connections' });
+    await expect(testButton).toBeVisible();
+    await testButton.click();
 
-    // Verify error message is displayed
-    const errorAlert = page.getByRole('alert');
-    await expect(errorAlert).toBeVisible();
-    await expect(errorAlert).toHaveText(/Unable to test connections/);
+    // Wait for loading state
+    const loading = page.locator('#loading');
+    await expect(loading).toHaveClass(/active/);
+
+    // Wait for error message
+    const errorMessage = page.locator('.error-message');
+    await expect(errorMessage).toBeVisible({ timeout: 10000 });
+    await expect(errorMessage).toContainText('Unable to test connections');
+
+    // Verify loading state is gone
+    await expect(loading).not.toHaveClass(/active/);
   });
 
   test('should show loading state during connection test', async ({ page }) => {
     // Click the test connections button
-    await page.getByRole('button', { name: 'Test Connections' }).click();
+    const testButton = page.getByRole('button', { name: 'Test Connections' });
+    await expect(testButton).toBeVisible();
+    await testButton.click();
 
-    // Verify loading state
-    const loadingSpinner = page.getByRole('progressbar');
-    await expect(loadingSpinner).toBeVisible();
+    // Wait for loading state
+    const loading = page.locator('#loading');
+    await expect(loading).toHaveClass(/active/);
 
-    // Wait for loading to complete
-    await expect(loadingSpinner).not.toBeVisible();
+    // Wait for loading state to disappear
+    await expect(loading).not.toHaveClass(/active/, { timeout: 10000 });
   });
 
   test('should retry failed connections', async ({ page }) => {
