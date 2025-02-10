@@ -1,0 +1,27 @@
+{
+  "name": "dragon-suite",
+  "version": "1.0.0",
+  "description": "A background Android service that enables video analysis through ChatGPT, controlled entirely through GPT Actions.",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "test:ui": "playwright test --ui"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nassermendes/dragon-suite.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nassermendes/dragon-suite/issues"
+  },
+  "homepage": "https://github.com/nassermendes/dragon-suite#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.41.2",
+    "@types/node": "^20.11.17"
+  }
+}

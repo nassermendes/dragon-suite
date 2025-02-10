@@ -85,3 +85,14 @@ android/.gradle/
 android/build/
 android/app/build/
 android/testlib/build/
+
+
+# windsurf rules
+.windsurfrules
+
+# Playwright
+node_modules/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/

@@ -46,9 +46,9 @@ class DragonFirebaseMessagingService : FirebaseMessagingService() {
 
         // Start the DragonService with the video analysis intent
         val intent = Intent(this, DragonService::class.java).apply {
-            action = DragonService.ACTION_UPLOAD_VIDEO
+            action = DragonService.ACTION_ANALYZE_VIDEO
             putExtra(DragonService.EXTRA_VIDEO_URI, videoUri)
-            putExtra(DragonService.EXTRA_UPLOAD_URL, uploadUrl)
+            putExtra("upload_url", uploadUrl)
         }
         startService(intent)
     }
