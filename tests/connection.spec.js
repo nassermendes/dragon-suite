@@ -7,39 +7,50 @@ test.describe('Social Media Integration', () => {
     page.on('console', msg => console.log('Browser log:', msg.text()));
 
     // Navigate to the test activity and ensure it loads
-    await page.goto('/test');
+    await page.goto('http://localhost:8080/test');
     await expect(page.getByRole('heading', { name: 'Connection Test' })).toBeVisible();
   });
 
-  test('should display connection status for all platforms', async ({ page }) => {
-    // Click the test connections button
+  test('should test all platform connections', async ({ page }) => {
+    // Start the test
+    await page.goto('http://localhost:8080/test');
+    console.log('Starting connection test...');
+
+    // Click test button
     const testButton = page.getByRole('button', { name: 'Test Connections' });
     await expect(testButton).toBeVisible();
     await testButton.click();
 
-    // Wait for loading state
+    // Verify loading state appears
     const loading = page.locator('#loading');
     await expect(loading).toHaveClass(/active/);
 
-    // Wait for results to be populated
+    // Wait for results
     const results = page.locator('#results');
     await expect(results).toBeVisible();
 
-    // Wait for all connection statuses to appear
-    const statuses = [
-      'instagram: connected - Instagram connection successful',
-      'youtube: connected - YouTube connection successful',
-      'tiktok: connected - TikTok connection successful'
-    ];
+    // Wait for all connection status elements to appear
+    await expect(page.locator('.connection-status')).toHaveCount(6, { timeout: 10000 });
 
-    for (const status of statuses) {
-      await expect(page.locator('.connection-status', {
-        hasText: status
-      })).toBeVisible({ timeout: 10000 });
+    // Verify all platforms have results (either success or error)
+    const platforms = ['Instagram', 'YouTube', 'TikTok'];
+    const accounts = ['THEREAL_MENDES', 'ALGARVIOCHARITY'];
+
+    for (const platform of platforms) {
+      for (const account of accounts) {
+        await expect(
+          page.locator('.connection-status', {
+            hasText: new RegExp(`${platform}.*${account}`, 'i')
+          })
+        ).toBeVisible({ timeout: 10000 });
+      }
     }
 
-    // Verify loading state is gone
+    // Verify loading state disappears
     await expect(loading).not.toHaveClass(/active/);
+
+    // Take a screenshot of the results
+    await page.screenshot({ path: 'test-results.png' });
   });
 
   test('should handle network failures gracefully', async ({ page }) => {

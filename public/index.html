@@ -1,89 +1,218 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Welcome to Firebase Hosting</title>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dragon Suite - Social Media Integration</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.x.x/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.x.x/firebase-analytics.js"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+        <header class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-gray-800 mb-4">Dragon Suite</h1>
+            <p class="text-lg text-gray-600">Social Media Integration Dashboard</p>
+        </header>
 
-    <!-- update the version number as needed -->
-    <script defer src="/__/firebase/11.2.0/firebase-app-compat.js"></script>
-    <!-- include only the Firebase features as you need -->
-    <script defer src="/__/firebase/11.2.0/firebase-auth-compat.js"></script>
-    <script defer src="/__/firebase/11.2.0/firebase-database-compat.js"></script>
-    <script defer src="/__/firebase/11.2.0/firebase-firestore-compat.js"></script>
-    <script defer src="/__/firebase/11.2.0/firebase-functions-compat.js"></script>
-    <script defer src="/__/firebase/11.2.0/firebase-messaging-compat.js"></script>
-    <script defer src="/__/firebase/11.2.0/firebase-storage-compat.js"></script>
-    <script defer src="/__/firebase/11.2.0/firebase-analytics-compat.js"></script>
-    <script defer src="/__/firebase/11.2.0/firebase-remote-config-compat.js"></script>
-    <script defer src="/__/firebase/11.2.0/firebase-performance-compat.js"></script>
-    <!-- 
-      initialize the SDK after all desired features are loaded, set useEmulator to false
-      to avoid connecting the SDK to running emulators.
-    -->
-    <script defer src="/__/firebase/init.js?useEmulator=true"></script>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Personal Account -->
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-2xl font-semibold mb-6">@thereal.mendes</h2>
+                
+                <!-- Instagram -->
+                <div class="account-section mb-6" data-account="THEREAL_MENDES" data-platform="instagram">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-lg font-medium">Instagram Reels</h3>
+                        <a href="/auth/instagram/init/THEREAL_MENDES" class="connect-button bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded">Connect Account</a>
+                    </div>
+                    <div id="thereal_mendes-instagram-status" class="text-sm"></div>
+                </div>
 
-    <style media="screen">
-      body { background: #ECEFF1; color: rgba(0,0,0,0.87); font-family: Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
-      #message { background: white; max-width: 360px; margin: 100px auto 16px; padding: 32px 24px; border-radius: 3px; }
-      #message h2 { color: #ffa100; font-weight: bold; font-size: 16px; margin: 0 0 8px; }
-      #message h1 { font-size: 22px; font-weight: 300; color: rgba(0,0,0,0.6); margin: 0 0 16px;}
-      #message p { line-height: 140%; margin: 16px 0 24px; font-size: 14px; }
-      #message a { display: block; text-align: center; background: #039be5; text-transform: uppercase; text-decoration: none; color: white; padding: 16px; border-radius: 4px; }
-      #message, #message a { box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); }
-      #load { color: rgba(0,0,0,0.4); text-align: center; font-size: 13px; }
-      @media (max-width: 600px) {
-        body, #message { margin-top: 0; background: white; box-shadow: none; }
-        body { border-top: 16px solid #ffa100; }
-      }
-    </style>
-  </head>
-  <body>
-    <div id="message">
-      <h2>Welcome</h2>
-      <h1>Firebase Hosting Setup Complete</h1>
-      <p>You're seeing this because you've successfully setup Firebase Hosting. Now it's time to go build something extraordinary!</p>
-      <a target="_blank" href="https://firebase.google.com/docs/hosting/">Open Hosting Documentation</a>
+                <!-- YouTube -->
+                <div class="account-section mb-6" data-account="THEREAL_MENDES" data-platform="youtube">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-lg font-medium">YouTube Shorts</h3>
+                        <a href="/auth/youtube/init/THEREAL_MENDES" class="connect-button bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Connect Account</a>
+                    </div>
+                    <div id="thereal_mendes-youtube-status" class="text-sm"></div>
+                </div>
+
+                <!-- TikTok -->
+                <div class="account-section mb-6" data-account="THEREAL_MENDES" data-platform="tiktok">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-lg font-medium">TikTok</h3>
+                        <a href="/auth/tiktok/init/THEREAL_MENDES" class="connect-button bg-black hover:bg-gray-800 text-white px-4 py-2 rounded">Connect Account</a>
+                    </div>
+                    <div id="thereal_mendes-tiktok-status" class="text-sm"></div>
+                </div>
+            </div>
+
+            <!-- Charity Account -->
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-2xl font-semibold mb-6">@algarviocharity</h2>
+                
+                <!-- Instagram -->
+                <div class="account-section mb-6" data-account="ALGARVIOCHARITY" data-platform="instagram">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-lg font-medium">Instagram Reels</h3>
+                        <a href="/auth/instagram/init/ALGARVIOCHARITY" class="connect-button bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded">Connect Account</a>
+                    </div>
+                    <div id="algarviocharity-instagram-status" class="text-sm"></div>
+                </div>
+
+                <!-- YouTube -->
+                <div class="account-section mb-6" data-account="ALGARVIOCHARITY" data-platform="youtube">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-lg font-medium">YouTube Shorts</h3>
+                        <a href="/auth/youtube/init/ALGARVIOCHARITY" class="connect-button bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Connect Account</a>
+                    </div>
+                    <div id="algarviocharity-youtube-status" class="text-sm"></div>
+                </div>
+
+                <!-- TikTok -->
+                <div class="account-section mb-6" data-account="ALGARVIOCHARITY" data-platform="tiktok">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-lg font-medium">TikTok</h3>
+                        <a href="/auth/tiktok/init/ALGARVIOCHARITY" class="connect-button bg-black hover:bg-gray-800 text-white px-4 py-2 rounded">Connect Account</a>
+                    </div>
+                    <div id="algarviocharity-tiktok-status" class="text-sm"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upload Form -->
+        <div class="mt-12 bg-white rounded-lg shadow-lg p-6">
+            <h2 class="text-2xl font-semibold mb-6">Upload Video</h2>
+            <form id="uploadForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Video File</label>
+                    <input type="file" accept="video/*" required class="mt-1 block w-full" />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Caption</label>
+                    <input type="text" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" />
+                </div>
+                <div class="flex space-x-4">
+                    <button type="submit" class="upload-button bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded">
+                        Upload to All Platforms
+                    </button>
+                    <div id="upload-status" class="text-sm"></div>
+                </div>
+            </form>
+        </div>
     </div>
-    <p id="load">Firebase SDK Loading&hellip;</p>
 
     <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const loadEl = document.querySelector('#load');
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
-        // // The Firebase SDK is initialized and available here!
-        //
-        // firebase.auth().onAuthStateChanged(user => { });
-        // firebase.database().ref('/path/to/ref').on('value', snapshot => { });
-        // firebase.firestore().doc('/foo/bar').get().then(() => { });
-        // firebase.functions().httpsCallable('yourFunction')().then(() => { });
-        // firebase.messaging().requestPermission().then(() => { });
-        // firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });
-        // firebase.analytics(); // call to activate
-        // firebase.analytics().logEvent('tutorial_completed');
-        // firebase.performance(); // call to activate
-        //
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+        // Initialize Firebase
+        const firebaseConfig = {
+            // Your Firebase config here
+        };
+        firebase.initializeApp(firebaseConfig);
+        const analytics = firebase.analytics();
 
-        try {
-          let app = firebase.app();
-          let features = [
-            'auth', 
-            'database', 
-            'firestore',
-            'functions',
-            'messaging', 
-            'storage', 
-            'analytics', 
-            'remoteConfig',
-            'performance',
-          ].filter(feature => typeof app[feature] === 'function');
-          loadEl.textContent = `Firebase SDK loaded with ${features.join(', ')}`;
-        } catch (e) {
-          console.error(e);
-          loadEl.textContent = 'Error loading the Firebase SDK, check the console.';
+        // Handle URL parameters for auth callbacks
+        const urlParams = new URLSearchParams(window.location.search);
+        const account = urlParams.get('account');
+        const platform = urlParams.get('platform');
+        const success = urlParams.get('success');
+        const error = urlParams.get('error');
+
+        if (account && platform) {
+            const statusDiv = document.getElementById(`${account.toLowerCase()}-${platform}-status`);
+            if (success) {
+                statusDiv.textContent = 'Successfully connected!';
+                statusDiv.className = 'text-sm text-green-600';
+                localStorage.setItem(`${platform}_${account}_connected`, 'true');
+                analytics.logEvent('social_account_connected', { account, platform });
+            } else if (error) {
+                statusDiv.textContent = decodeURIComponent(error);
+                statusDiv.className = 'text-sm text-red-600';
+                analytics.logEvent('social_account_error', { account, platform, error });
+            }
         }
-      });
+
+        // Handle form submission
+        document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const uploadStatus = document.getElementById('upload-status');
+            const file = e.target.querySelector('input[type="file"]').files[0];
+            const caption = e.target.querySelector('input[type="text"]').value;
+
+            try {
+                uploadStatus.textContent = 'Uploading...';
+                uploadStatus.className = 'text-sm text-blue-600';
+
+                // Create object URL for the video file
+                const videoUrl = URL.createObjectURL(file);
+
+                // Upload to all connected platforms for both accounts
+                const accounts = ['THEREAL_MENDES', 'ALGARVIOCHARITY'];
+                const platforms = ['instagram', 'youtube', 'tiktok'];
+                
+                for (const account of accounts) {
+                    for (const platform of platforms) {
+                        if (localStorage.getItem(`${platform}_${account}_connected`) === 'true') {
+                            try {
+                                const response = await fetch(`/${platform}/video/${account}`, {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({ videoUrl, caption })
+                                });
+
+                                const result = await response.json();
+                                const statusDiv = document.getElementById(`${account.toLowerCase()}-${platform}-status`);
+                                
+                                if (result.success) {
+                                    statusDiv.textContent = 'Upload successful!';
+                                    statusDiv.className = 'text-sm text-green-600';
+                                    analytics.logEvent('video_upload_success', { account, platform });
+                                } else {
+                                    throw new Error(result.error);
+                                }
+                            } catch (error) {
+                                const statusDiv = document.getElementById(`${account.toLowerCase()}-${platform}-status`);
+                                statusDiv.textContent = `Upload failed: ${error.message}`;
+                                statusDiv.className = 'text-sm text-red-600';
+                                analytics.logEvent('video_upload_error', { account, platform, error: error.message });
+                            }
+                        }
+                    }
+                }
+
+                uploadStatus.textContent = 'All uploads completed!';
+                uploadStatus.className = 'text-sm text-green-600';
+            } catch (error) {
+                uploadStatus.textContent = `Upload failed: ${error.message}`;
+                uploadStatus.className = 'text-sm text-red-600';
+                analytics.logEvent('video_upload_error', { error: error.message });
+            }
+        });
+
+        // Update UI based on connection status
+        function updateConnectionStatus() {
+            const accounts = ['THEREAL_MENDES', 'ALGARVIOCHARITY'];
+            const platforms = ['instagram', 'youtube', 'tiktok'];
+
+            for (const account of accounts) {
+                for (const platform of platforms) {
+                    const isConnected = localStorage.getItem(`${platform}_${account}_connected`) === 'true';
+                    const section = document.querySelector(`.account-section[data-account="${account}"][data-platform="${platform}"]`);
+                    const button = section.querySelector('.connect-button');
+                    const statusDiv = document.getElementById(`${account.toLowerCase()}-${platform}-status`);
+
+                    if (isConnected) {
+                        button.textContent = 'Connected';
+                        button.disabled = true;
+                        statusDiv.textContent = 'Successfully connected!';
+                        statusDiv.className = 'text-sm text-green-600';
+                    }
+                }
+            }
+        }
+
+        // Update status on page load
+        updateConnectionStatus();
     </script>
-  </body>
+</body>
 </html>
