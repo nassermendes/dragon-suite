@@ -1,0 +1,30 @@
+[
+    {
+        "merged": "com.example.dragonsuite.app-merged_res-50:/mipmap-mdpi_ic_launcher.png.flat",
+        "source": "com.example.dragonsuite.app-main-52:/mipmap-mdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.example.dragonsuite.app-merged_res-50:/drawable_chat_input_background.xml.flat",
+        "source": "com.example.dragonsuite.app-main-52:/drawable/chat_input_background.xml"
+    },
+    {
+        "merged": "com.example.dragonsuite.app-merged_res-50:/drawable_ic_send.xml.flat",
+        "source": "com.example.dragonsuite.app-main-52:/drawable/ic_send.xml"
+    },
+    {
+        "merged": "com.example.dragonsuite.app-merged_res-50:/layout_dialog_chatgpt.xml.flat",
+        "source": "com.example.dragonsuite.app-main-52:/layout/dialog_chatgpt.xml"
+    },
+    {
+        "merged": "com.example.dragonsuite.app-merged_res-50:/mipmap-mdpi_ic_launcher_round.png.flat",
+        "source": "com.example.dragonsuite.app-main-52:/mipmap-mdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.example.dragonsuite.app-merged_res-50:/drawable_ic_error.xml.flat",
+        "source": "com.example.dragonsuite.app-main-52:/drawable/ic_error.xml"
+    },
+    {
+        "merged": "com.example.dragonsuite.app-merged_res-50:/drawable_ic_success.xml.flat",
+        "source": "com.example.dragonsuite.app-main-52:/drawable/ic_success.xml"
+    }
+]

@@ -1,0 +1,24 @@
+title: Dragon Suite
+description: Social Media Management Tool
+domain: nassermendes.github.io
+url: https://nassermendes.github.io
+baseurl: /dragon-suite
+
+# Build settings
+markdown: kramdown
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+
+# Exclude from processing
+exclude:
+  - .sass-cache/
+  - .jekyll-cache/
+  - gemfiles/
+  - Gemfile
+  - Gemfile.lock
+  - node_modules/
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/

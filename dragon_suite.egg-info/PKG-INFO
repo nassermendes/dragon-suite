@@ -1,0 +1,118 @@
+Metadata-Version: 2.2
+Name: dragon-suite
+Version: 0.1.0
+Summary: A comprehensive automation toolkit
+Home-page: https://github.com/yourusername/dragon-suite
+Author: Your Name
+Author-email: your.email@example.com
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: pydantic>=2.5.2
+Requires-Dist: python-dotenv>=1.0.0
+Requires-Dist: PyYAML>=6.0.1
+Requires-Dist: loguru>=0.7.2
+Provides-Extra: dev
+Requires-Dist: pytest>=7.4.3; extra == "dev"
+Requires-Dist: pytest-asyncio>=0.21.1; extra == "dev"
+Requires-Dist: pytest-cov>=4.1.0; extra == "dev"
+Requires-Dist: black>=23.11.0; extra == "dev"
+Requires-Dist: isort>=5.12.0; extra == "dev"
+Requires-Dist: flake8>=6.1.0; extra == "dev"
+Requires-Dist: mypy>=1.7.1; extra == "dev"
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# Dragon Suite
+
+Dragon Suite is a comprehensive automation toolkit designed to streamline and enhance your workflow. It combines powerful automation capabilities with intelligent processing to help you work more efficiently.
+
+## Features
+
+- **Task Automation**: Automate repetitive tasks and workflows
+- **Smart Processing**: Intelligent handling of data and processes
+- **Integration Ready**: Easy integration with existing tools and systems
+- **Customizable**: Flexible configuration to match your needs
+- **Secure**: Built with security best practices
+
+## Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/dragon-suite.git
+
+# Navigate to the project directory
+cd dragon-suite
+
+# Install dependencies
+pip install -r requirements.txt
+```
+
+## Project Structure
+
+```
+dragon-suite/
+â”œâ”€â”€ src/
+â”‚   â”œâ”€â”€ core/           # Core functionality
+â”‚   â”œâ”€â”€ automation/     # Automation modules
+â”‚   â”œâ”€â”€ integrations/   # Third-party integrations
+â”‚   â””â”€â”€ utils/         # Utility functions
+â”œâ”€â”€ tests/             # Test suite
+â”œâ”€â”€ docs/              # Documentation
+â”œâ”€â”€ examples/          # Example usage
+â””â”€â”€ config/           # Configuration files
+```
+
+## Configuration
+
+1. Copy `.env.example` to `.env`
+2. Update the environment variables in `.env` with your settings
+3. Configure additional settings in `config/settings.py`
+
+## Usage
+
+```python
+from dragon_suite import DragonSuite
+
+# Initialize the suite
+dragon = DragonSuite()
+
+# Configure settings
+dragon.configure(config_path='path/to/config.yml')
+
+# Run automation
+dragon.run_automation('task_name')
+```
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Contact
+
+Your Name - [@yourusername](https://twitter.com/yourusername)
+Project Link: [https://github.com/yourusername/dragon-suite](https://github.com/yourusername/dragon-suite)
