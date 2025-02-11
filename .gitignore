@@ -86,7 +86,6 @@ android/build/
 android/app/build/
 android/testlib/build/
 
-
 # windsurf rules
 .windsurfrules
 
@@ -96,3 +95,43 @@ node_modules/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+# Dependencies
+node_modules/
+.env
+.env.local
+.env.*.local
+
+# API keys and secrets
+*.pem
+*.key
+*credentials*.json
+*service-account*.json
+
+# Environment configuration
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDE specific files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Build output
+dist/
+build/
+out/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# System Files
+.DS_Store
+Thumbs.db
