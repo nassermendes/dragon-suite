@@ -14,6 +14,10 @@ android {
         applicationId "com.example.dragonsuite"
         buildConfigField "String", "OPENAI_API_KEY", "\"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\""
         
+        // TikTok credentials
+        buildConfigField "String", "TIKTOK_CLIENT_KEY", "\"\""  // Will be set from local.properties
+        buildConfigField "String", "TIKTOK_APP_ID", "\"\""      // Will be set from local.properties
+        
         // Instagram tokens
         buildConfigField "String", "INSTAGRAM_TOKEN_MENDES", "\"\""  // Add your token here
         buildConfigField "String", "INSTAGRAM_TOKEN_CHARITY", "\"\""  // Add your token here
@@ -29,7 +33,7 @@ android {
         minSdk 24
         targetSdk 34
         versionCode 52
-        versionName "2.0.0"
+        versionName "1.0.0"
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -48,23 +52,30 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release {
+            storeFile file('release.keystore')
+            storePassword 'dragon_suite'
+            keyAlias 'dragon_suite'
+            keyPassword 'dragon_suite'
+        }
     }
 
     buildTypes {
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
         debug {
+            signingConfig signingConfigs.debug
             debuggable true
             minifyEnabled false
-            signingConfig signingConfigs.debug
             firebaseAppDistribution {
                 artifactType = "APK"
                 releaseNotes = "Debug build with latest changes"
                 testers = "nassermendes@gmail.com"
                 groups = "testers"
             }
-        }
-        release {
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
     
@@ -118,6 +129,40 @@ dependencies {
     
     // Lifecycle
     def lifecycle_version = "2.7.0"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+
+    // TikTok SDK dependencies
+    implementation 'com.tiktok.open.sdk:tiktok-open-sdk:1.1.0'
+    
+    // Other dependencies
+    implementation 'androidx.core:core-ktx:1.12.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.11.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    
+    // OpenAI
+    implementation 'com.aallam.openai:openai-client:3.6.2'
+    implementation 'io.ktor:ktor-client-android:2.3.7'
+    
+    // Networking
+    implementation 'com.squareup.okhttp3:okhttp:4.12.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.12.0'
+    
+    // Coroutines
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3'
+    
+    // Room
+    implementation "androidx.room:room-runtime:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+    
+    // WorkManager
+    implementation "androidx.work:work-runtime-ktx:$work_version"
+    
+    // Lifecycle
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"

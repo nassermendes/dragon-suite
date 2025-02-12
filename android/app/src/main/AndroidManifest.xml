@@ -36,6 +36,16 @@
         </activity>
         
         <activity
+            android:name=".TikTokTestActivity"
+            android:exported="true"
+            android:label="TikTok Test">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
+        <activity
             android:name=".TestActivity"
             android:exported="true"
             android:label="Dragon Suite Connection Test">
@@ -50,5 +60,20 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@android:color/holo_blue_dark" />
-    </application>
+    
+        <!-- TikTok SDK Configuration -->
+        <activity
+            android:name="com.tiktok.open.sdk.auth.AuthActivity"
+            android:launchMode="singleTask"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:host="${applicationId}"
+                    android:scheme="tiktok" />
+            </intent-filter>
+        </activity>
+        </application>
 </manifest>

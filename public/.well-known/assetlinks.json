@@ -1,10 +1,14 @@
-[{
-  "relation": ["delegate_permission/common.handle_all_urls"],
-  "target": {
-    "namespace": "android_app",
-    "package_name": "com.dragonsuite.app",
-    "sha256_cert_fingerprints": [
-      "YOUR_APP_SIGNING_CERTIFICATE_SHA256_FINGERPRINT"
-    ]
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.example.dragonsuite",
+      "sha256_cert_fingerprints": [
+        "8d334e4441743a5bb82b5e98797f288d5ddab965a6de4d515ec412ff2a34f997"
+      ]
+    }
   }
-}]
+]

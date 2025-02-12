@@ -3,8 +3,10 @@
     "apps": [],
     "details": [
       {
-        "appID": "YOUR_TIKTOK_APP_ID",
-        "paths": ["*"]
+        "appID": "V3YdcqktUiAzLEYpGFr1t6AZHaHe2CyT",
+        "paths": [
+          "*"
+        ]
       }
     ]
   }

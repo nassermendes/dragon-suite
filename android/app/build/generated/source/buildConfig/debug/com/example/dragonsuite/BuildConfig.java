@@ -16,6 +16,10 @@ public final class BuildConfig {
   // Field from default config.
   public static final String OPENAI_API_KEY = "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";
   // Field from default config.
+  public static final String TIKTOK_APP_ID = "";
+  // Field from default config.
+  public static final String TIKTOK_CLIENT_KEY = "";
+  // Field from default config.
   public static final String TIKTOK_TOKEN_CHARITY = "";
   // Field from default config.
   public static final String TIKTOK_TOKEN_MENDES = "";
