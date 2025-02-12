@@ -116,3 +116,47 @@ coverage/
 # OS specific
 .DS_Store
 Thumbs.db
+
+# Python virtual environment
+venv/
+env/
+.env/
+.venv/
+
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Build and distribution
+dist/
+build/
+*.egg-info/
+
+# IDE specific files
+.vscode/
+*.swp
+*.swo
+
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+
+# Local development
+*.env
+.env.local
+.env.*.local
+
+# Temporary files
+*.tmp
+*.temp
+.DS_Store
+Thumbs.db
+
+# GitGuardian
+.ggshield
+
+# Webhook related
+webhook/
