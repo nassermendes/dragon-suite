@@ -1,0 +1,21 @@
+# Sensitive configuration for Android build
+sdk.dir=path/to/your/android/sdk
+
+# API Keys
+OPENAI_API_KEY=your_api_key_here
+TIKTOK_CLIENT_KEY=your_client_key_here
+TIKTOK_APP_ID=your_app_id_here
+
+# Social Media Tokens
+INSTAGRAM_TOKEN_MENDES=your_token_here
+INSTAGRAM_TOKEN_CHARITY=your_token_here
+YOUTUBE_TOKEN_MENDES=your_token_here
+YOUTUBE_TOKEN_CHARITY=your_token_here
+TIKTOK_TOKEN_MENDES=your_token_here
+TIKTOK_TOKEN_CHARITY=your_token_here
+
+# Signing Configuration
+RELEASE_STORE_FILE=path/to/your/release.keystore
+RELEASE_STORE_PASSWORD=your_keystore_password
+RELEASE_KEY_ALIAS=your_key_alias
+RELEASE_KEY_PASSWORD=your_key_password
