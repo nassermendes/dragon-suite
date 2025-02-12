@@ -157,6 +157,17 @@ Thumbs.db
 
 # GitGuardian
 .ggshield
+.cache_ggshield
+.pre-commit-config.yaml
+
+# Temporary scripts
+fix-git-auth.py
+push-changes.ps1
+**/tiktok*.txt
+
+# Generated scripts
+scripts/get_gitguardian_key.py
+scripts/setup_gitguardian.py
 
 # Webhook related
 webhook/
