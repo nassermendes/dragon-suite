@@ -1,3 +1,38 @@
+(node:4544) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Users\nasse\CascadeProjects\dragon-suite
+
+Before we get started, keep in mind:
+
+  * You are initializing within an existing Firebase project directory
+
+? Are you ready to proceed? (Y/n)(node:4544) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Users\nasse\CascadeProjects\dragon-suite
+
+Before we get started, keep in mind:
+
+  * You are initializing within an existing Firebase project directory
+
+? Are you ready to proceed? (Y/n)y
 From: <Saved by Blink>
 Snapshot-Content-Location: https://help.openai.com/en/articles/8304786-how-can-i-keep-my-openai-accounts-secure
 Subject: How can I keep my OpenAI accounts secure? | OpenAI Help Center

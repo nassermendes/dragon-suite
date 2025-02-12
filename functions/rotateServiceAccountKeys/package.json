@@ -1,0 +1,14 @@
+{
+  "name": "rotate-service-account-keys",
+  "version": "1.0.0",
+  "description": "Cloud Function to automatically rotate service account keys",
+  "main": "index.js",
+  "dependencies": {
+    "google-auth-library": "^9.4.1",
+    "@google-cloud/iam-credentials": "^3.0.0",
+    "protobufjs": "^7.2.5"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}

@@ -24,41 +24,47 @@ venv/
 env/
 ENV/
 
+# Firebase
+.firebase/
+firebase-debug.log
+ui-debug.log
+
+# Dependencies
+node_modules/
+.pnp/
+.pnp.js
+
+# Environment
+.env
+.env.local
+.env.*.local
+.env.development
+.env.test
+.env.production
+
+# Build
+/build
+/dist
+/lib
+*.log
+
 # IDE
 .idea/
 .vscode/
 *.swp
 *.swo
-.project
-.pydevproject
-.settings/
 
-# Environment Variables
-.env
-.env.*
-!.env.example
+# API Keys and Secrets
+*.pem
+*.key
+service-account*.json
+*-key*.json
 
-# Logs
-*.log
-logs/
-log/
+# GitGuardian
+.gitsecret
+.ggshield
 
-# Testing
-.coverage
-htmlcov/
-.pytest_cache/
-.mypy_cache/
-
-# Build
-*.spec
-*.manifest
-*.pyc
-
-# Documentation
-/site
-/docs/_build/
-
-# Operating System
+# Misc
 .DS_Store
 Thumbs.db
 
@@ -90,47 +96,28 @@ android/testlib/build/
 .windsurfrules
 
 # Playwright
-node_modules/
 /test-results/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
 
-# Dependencies
-node_modules/
-.env
-.env.local
-.env.*.local
-
-# API keys and secrets
-*.pem
-*.key
-*credentials*.json
-*service-account*.json
-
-# Environment configuration
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-# IDE specific files
-.idea/
-.vscode/
-*.swp
-*.swo
-
-# Build output
-dist/
-build/
-out/
+# Operating System
+.DS_Store
+Thumbs.db
 
 # Logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+logs/
+log/
+
+# Testing
+.coverage
+htmlcov/
+.pytest_cache/
+.mypy_cache/
+
+# Documentation
+/site
+/docs/_build/
 
 # System Files
 .DS_Store
