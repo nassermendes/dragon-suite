@@ -8,12 +8,11 @@ buildscript {
     repositories {
         google()
         mavenCentral()
+        maven { url "https://artifact.bytedance.com/repository/tiktok" }
         maven { url "https://storage.googleapis.com/download.flutter.io" }
         maven { url 'https://jitpack.io' }
         maven { url 'https://maven.google.com' }
-        maven { url "https://artifact.bytedance.com/repository/tiktok" }
-        maven { url "https://artifact.bytedance.com/repository/maven" }
-}
+    }
     dependencies {
         classpath "com.android.tools.build:gradle:$agp_version"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
@@ -31,8 +30,10 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        maven { url 'https://jitpack.io' }
         maven { url "https://artifact.bytedance.com/repository/tiktok" }
+        maven { url "https://storage.googleapis.com/download.flutter.io" }
+        maven { url 'https://jitpack.io' }
+        maven { url 'https://maven.google.com' }
     }
 }
 

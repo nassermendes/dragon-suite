@@ -1,3 +1,73 @@
+# Built application files
+*.apk
+*.aar
+*.ap_
+*.aab
+
+# Files for the ART/Dalvik VM
+*.dex
+
+# Java class files
+*.class
+
+# Generated files
+bin/
+gen/
+out/
+
+# Gradle files
+.gradle/
+build/
+local.properties
+
+# IntelliJ
+*.iml
+.idea/
+
+# Android Studio Navigation editor temp files
+.navigation/
+
+# Android Studio captures folder
+captures/
+
+# External native build folder generated in Android Studio 2.2 and later
+.externalNativeBuild
+.cxx/
+
+# Google Services (e.g. APIs or Firebase)
+google-services.json
+firebase-service-account.json
+*-new-key.json
+
+# Keystore files
+*.jks
+*.keystore
+!debug.keystore
+
+# Log Files
+*.log
+crash_logs.txt
+
+# Android Studio generated files and folders
+captures/
+.externalNativeBuild/
+.cxx/
+*.apk
+output.json
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Keystore files
+*.jks
+*.keystore
+
+# Google Services (e.g. APIs or Firebase)
+google-services.json
+
+# Android Profiling
+*.hprof
+
 # Python
 __pycache__/
 *.py[cod]
@@ -5,6 +75,8 @@ __pycache__/
 *.so
 .Python
 env/
+build/
+develop-eggs/
 dist/
 downloads/
 eggs/
@@ -19,106 +91,28 @@ wheels/
 .installed.cfg
 *.egg
 
-# Virtual Environment
-venv/
-env/
-ENV/
-
-# Firebase
-.firebase/
-firebase-debug.log
-ui-debug.log
-
-# Dependencies
+# Node
 node_modules/
-.pnp/
-.pnp.js
+npm-debug.log
+yarn-debug.log
+yarn-error.log
 
-# Environment
+# Environment variables
 .env
 .env.local
 .env.*.local
-.env.development
-.env.test
-.env.production
 
-# Build
-/build
-/dist
-/lib
-*.log
+# API keys and secrets
+api_usage.db
 
-# IDE
-.idea/
-.vscode/
-*.swp
-*.swo
-
-# API Keys and Secrets
-*.pem
-*.key
-service-account*.json
-*-key*.json
-
-# GitGuardian
-.gitsecret
-.ggshield
-
-# Misc
-.DS_Store
-Thumbs.db
-
-# Android
-.gradle/
-build/
-local.properties
-captures/
-.externalNativeBuild/
-.cxx/
-*.apk
-output.json
-*.iml
-misc.xml
-deploymentTargetDropDown.xml
-render.experimental.xml
-*.jks
-*.keystore
-google-services.json
-*.hprof
-server/secrets/
-*.env
-android/.gradle/
-android/build/
-android/app/build/
-android/testlib/build/
-
-# windsurf rules
-.windsurfrules
-
-# Playwright
-/test-results/
-/playwright-report/
-/blob-report/
-/playwright/.cache/
-
-# Operating System
-.DS_Store
-Thumbs.db
-
-# Logs
-logs/
-log/
+# TypeScript
+*.tsbuildinfo
 
 # Testing
-.coverage
-htmlcov/
-.pytest_cache/
-.mypy_cache/
+test-results/
+playwright-report/
+coverage/
 
-# Documentation
-/site
-/docs/_build/
-
-# System Files
+# OS specific
 .DS_Store
 Thumbs.db

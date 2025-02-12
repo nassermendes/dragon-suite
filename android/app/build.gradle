@@ -134,6 +134,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
 
     // TikTok SDK dependencies
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.tiktok.open.sdk:tiktok-open-sdk:1.1.0'
     
     // Other dependencies
