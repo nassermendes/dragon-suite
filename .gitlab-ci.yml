@@ -1,0 +1,103 @@
+image: openjdk:17-jdk
+
+variables:
+  ANDROID_COMPILE_SDK: "33"
+  ANDROID_BUILD_TOOLS: "33.0.0"
+  ANDROID_SDK_TOOLS: "9477386"
+  GRADLE_USER_HOME: "${CI_PROJECT_DIR}/.gradle"
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - .gradle/
+    - build/
+    - app/build/
+
+stages:
+  - build
+  - test
+  - security
+  - deploy
+
+before_script:
+  - apt-get update && apt-get install -y wget unzip
+  - wget https://dl.google.com/android/repository/commandlinetools-linux-${ANDROID_SDK_TOOLS}_latest.zip
+  - unzip commandlinetools-linux-${ANDROID_SDK_TOOLS}_latest.zip
+  - mkdir -p android-sdk/cmdline-tools
+  - mv cmdline-tools android-sdk/cmdline-tools/latest
+  - export ANDROID_HOME=$PWD/android-sdk
+  - export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
+  - yes | sdkmanager --licenses
+  - sdkmanager "platforms;android-${ANDROID_COMPILE_SDK}"
+  - sdkmanager "build-tools;${ANDROID_BUILD_TOOLS}"
+
+build:
+  stage: build
+  script:
+    - chmod +x ./gradlew
+    - ./gradlew assembleDebug
+  artifacts:
+    paths:
+      - app/build/outputs/apk/debug/app-debug.apk
+    expire_in: 1 week
+
+unit_tests:
+  stage: test
+  script:
+    - ./gradlew test
+
+instrumentation_tests:
+  stage: test
+  script:
+    - ./gradlew connectedAndroidTest
+  when: manual
+
+security_scan:
+  stage: security
+  image: python:3.9
+  script:
+    - pip install ggshield
+    - ggshield auth login
+    - ggshield secret scan repo .
+  only:
+    - main
+    - merge_requests
+
+dependency_scan:
+  stage: security
+  script:
+    - ./gradlew dependencyCheckAnalyze
+
+deploy_firebase:
+  stage: deploy
+  script:
+    - curl -sL https://firebase.tools | bash
+    - firebase deploy --token $FIREBASE_TOKEN
+  only:
+    - main
+  environment:
+    name: production
+    url: https://dragon-suite.web.app
+
+deploy_playstore:
+  stage: deploy
+  script:
+    - ./gradlew bundleRelease
+    - ./gradlew publishReleaseBundle
+  only:
+    - tags
+  when: manual
+
+include:
+  - template: Security/SAST.gitlab-ci.yml
+  - template: Security/Secret-Detection.gitlab-ci.yml
+  - template: Security/Dependency-Scanning.gitlab-ci.yml
+
+sast:
+  stage: security
+
+secret_detection:
+  stage: security
+
+dependency_scanning:
+  stage: security
