@@ -7,7 +7,8 @@
     "test": "playwright test",
     "test:headed": "playwright test --headed",
     "test:debug": "playwright test --debug",
-    "test:ui": "playwright test --ui"
+    "test:ui": "playwright test --ui",
+    "security": "npm audit fix"
   },
   "repository": {
     "type": "git",
@@ -21,7 +22,7 @@
   },
   "homepage": "https://github.com/nassermendes/dragon-suite#readme",
   "devDependencies": {
-    "@playwright/test": "^1.41.2",
-    "@types/node": "^20.11.17"
+    "@playwright/test": "^1.42.0",
+    "@types/node": "^20.11.19"
   }
 }
